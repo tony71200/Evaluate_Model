@@ -1,0 +1,5 @@
+From 3D CT Scan, I get slices
+Each Slice is gray matrix with size (512x512x1)
+I merged 3 slices to make 1 image with size (512x512x3)
+concatinate(slice of previous, slice of present, slice of next)
+Save JPG Image
