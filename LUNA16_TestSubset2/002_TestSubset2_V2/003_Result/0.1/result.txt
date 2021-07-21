@@ -1,3 +1,0 @@
-Recall = True Positive/ Ground Truth = 699/767 = 91.13428943937419
-Precision = True Positive/ Total Object = 699/840 = 83.21428571428572
-F1 score =86.99439950217797

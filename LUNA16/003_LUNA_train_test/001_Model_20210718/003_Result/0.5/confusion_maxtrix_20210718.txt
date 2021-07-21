@@ -1,0 +1,15 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Confusion Matrix
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+thresh_confidence: 0.5
+thresh_IOU       : 0.5
+thresh_IOP       : 0.7
+thresh_IOGT      : 0.7
+                     [nodule] [  none] [ total] 
+                               Prediction
+            [nodule]      811      371     1182 
+Groundtruth [  none]      108 
+            [ total]      919 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+[nodule]   recall: 811/ 1182:  68.61 %     precision: 811/ 919:  88.25 %     f1-score:  77.20 %     avg IOU:  70.06 %
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

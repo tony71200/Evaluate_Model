@@ -1,3 +1,0 @@
-From 3D CT Scan, I get slices
-Each Slice is gray matrix with size (512x512x1)
-Save JPG Image in integer 8bit

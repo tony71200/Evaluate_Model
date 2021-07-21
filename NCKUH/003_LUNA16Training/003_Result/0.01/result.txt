@@ -1,0 +1,63 @@
+	Test_A
+With pathlothogy
+Recall = True Positive/ Ground Truth = 613/165 = 371.52
+Precision = True Positive/ Total Object = 613/744 = 82.39
+F1 score =134.87
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 141/105 = 134.29
+Precision = True Positive/ Total Object = 141/323 = 43.65
+F1 score =65.89
+Total
+Recall = True Positive/ Ground Truth = 754/270 = 279.26
+Precision = True Positive/ Total Object = 754/1067 = 70.67
+F1 score =112.79
+	Test_B
+With pathlothogy
+Recall = True Positive/ Ground Truth = 886/268 = 330.60
+Precision = True Positive/ Total Object = 886/1228 = 72.15
+F1 score =118.45
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 239/217 = 110.14
+Precision = True Positive/ Total Object = 239/715 = 33.43
+F1 score =51.29
+Total
+Recall = True Positive/ Ground Truth = 1125/485 = 231.96
+Precision = True Positive/ Total Object = 1125/1943 = 57.90
+F1 score =92.67
+	Test_C
+With pathlothogy
+Recall = True Positive/ Ground Truth = 1057/346 = 305.49
+Precision = True Positive/ Total Object = 1057/1436 = 73.61
+F1 score =118.63
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 233/194 = 120.10
+Precision = True Positive/ Total Object = 233/516 = 45.16
+F1 score =65.63
+Total
+Recall = True Positive/ Ground Truth = 1290/540 = 238.89
+Precision = True Positive/ Total Object = 1290/1952 = 66.09
+F1 score =103.53
+	Test_Me
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 328/307 = 106.84
+Precision = True Positive/ Total Object = 328/833 = 39.38
+F1 score =57.54
+	Test_S
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 16/15 = 106.67
+Precision = True Positive/ Total Object = 16/64 = 25.00
+F1 score =40.51
+
+
+Data_Ln 2D_w_patho: 
+Recall = True Positive/ Ground Truth = 2556/779 = 328.11
+Precision = True Positive/ Total Object = 2556/3408 = 75.00
+F1 score =122.09
+Data_Ln 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 613/516 = 118.80
+Precision = True Positive/ Total Object = 613/1554 = 39.45
+F1 score =59.23
+Data_Me 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 2556/779 = 328.11
+Precision = True Positive/ Total Object = 2556/3408 = 75.00
+F1 score =122.09

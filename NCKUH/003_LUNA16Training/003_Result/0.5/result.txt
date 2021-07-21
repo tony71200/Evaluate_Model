@@ -1,0 +1,63 @@
+	Test_A
+With pathlothogy
+Recall = True Positive/ Ground Truth = 100/165 = 60.61
+Precision = True Positive/ Total Object = 100/102 = 98.04
+F1 score =74.91
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 48/105 = 45.71
+Precision = True Positive/ Total Object = 48/53 = 90.57
+F1 score =60.76
+Total
+Recall = True Positive/ Ground Truth = 148/270 = 54.81
+Precision = True Positive/ Total Object = 148/155 = 95.48
+F1 score =69.65
+	Test_B
+With pathlothogy
+Recall = True Positive/ Ground Truth = 60/268 = 22.39
+Precision = True Positive/ Total Object = 60/72 = 83.33
+F1 score =35.29
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 84/217 = 38.71
+Precision = True Positive/ Total Object = 84/112 = 75.00
+F1 score =51.06
+Total
+Recall = True Positive/ Ground Truth = 144/485 = 29.69
+Precision = True Positive/ Total Object = 144/184 = 78.26
+F1 score =43.05
+	Test_C
+With pathlothogy
+Recall = True Positive/ Ground Truth = 156/346 = 45.09
+Precision = True Positive/ Total Object = 156/169 = 92.31
+F1 score =60.58
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 50/194 = 25.77
+Precision = True Positive/ Total Object = 50/55 = 90.91
+F1 score =40.16
+Total
+Recall = True Positive/ Ground Truth = 206/540 = 38.15
+Precision = True Positive/ Total Object = 206/224 = 91.96
+F1 score =53.93
+	Test_Me
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 91/307 = 29.64
+Precision = True Positive/ Total Object = 91/106 = 85.85
+F1 score =44.07
+	Test_S
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 3/15 = 20.00
+Precision = True Positive/ Total Object = 3/4 = 75.00
+F1 score =31.58
+
+
+Data_Ln 2D_w_patho: 
+Recall = True Positive/ Ground Truth = 316/779 = 40.56
+Precision = True Positive/ Total Object = 316/343 = 92.13
+F1 score =56.33
+Data_Ln 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 182/516 = 35.27
+Precision = True Positive/ Total Object = 182/220 = 82.73
+F1 score =49.46
+Data_Me 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 316/779 = 40.56
+Precision = True Positive/ Total Object = 316/343 = 92.13
+F1 score =56.33

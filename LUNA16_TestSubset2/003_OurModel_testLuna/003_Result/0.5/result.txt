@@ -1,3 +1,0 @@
-Recall = True Positive/ Ground Truth = 407/772 = 52.7
-Precision = True Positive/ Total Object = 407/452 = 90.0
-F1 score =66.5

@@ -1,0 +1,69 @@
+	Test_A
+With pathlothogy
+Recall = True Positive/ Ground Truth = 159/165 = 96.36
+Precision = True Positive/ Total Object = 159/164 = 96.95
+F1 score =96.66
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 65/105 = 61.90
+Precision = True Positive/ Total Object = 65/74 = 87.84
+F1 score =72.63
+Total
+Recall = True Positive/ Ground Truth = 224/270 = 82.96
+Precision = True Positive/ Total Object = 224/238 = 94.12
+F1 score =88.19
+	Test_B
+With pathlothogy
+Recall = True Positive/ Ground Truth = 216/268 = 80.60
+Precision = True Positive/ Total Object = 216/234 = 92.31
+F1 score =86.06
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 93/217 = 42.86
+Precision = True Positive/ Total Object = 93/155 = 60.00
+F1 score =50.00
+Total
+Recall = True Positive/ Ground Truth = 309/485 = 63.71
+Precision = True Positive/ Total Object = 309/389 = 79.43
+F1 score =70.71
+	Test_C
+With pathlothogy
+Recall = True Positive/ Ground Truth = 278/346 = 80.35
+Precision = True Positive/ Total Object = 278/286 = 97.20
+F1 score =87.97
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 83/194 = 42.78
+Precision = True Positive/ Total Object = 83/93 = 89.25
+F1 score =57.84
+Total
+Recall = True Positive/ Ground Truth = 361/540 = 66.85
+Precision = True Positive/ Total Object = 361/379 = 95.25
+F1 score =78.56
+	Test_Me
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 146/307 = 47.56
+Precision = True Positive/ Total Object = 146/166 = 87.95
+F1 score =61.73
+	Test_S
+Without pathlothogy
+Recall = True Positive/ Ground Truth = 10/15 = 66.67
+Precision = True Positive/ Total Object = 10/10 = 100.00
+F1 score =80.00
+
+
+Data_Ln 2D_w_patho: 
+Recall = True Positive/ Ground Truth = 653/779 = 83.83
+Precision = True Positive/ Total Object = 653/684 = 95.47
+F1 score =89.27
+Data_Ln 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 241/516 = 46.71
+Precision = True Positive/ Total Object = 241/322 = 74.84
+F1 score =57.52
+Data_Me 2D_wo_patho: 
+Recall = True Positive/ Ground Truth = 653/779 = 83.83
+Precision = True Positive/ Total Object = 653/684 = 95.47
+F1 score =89.27
+
+
+Total Data_Ln 2D 
+Recall = True Positive/ Ground Truth = 816/1332 = 61.26
+Precision = True Positive/ Total Object = 816/934 = 87.37
+F1 score =72.02

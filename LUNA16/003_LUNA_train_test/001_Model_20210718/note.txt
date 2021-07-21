@@ -1,0 +1,6 @@
+From 3D CT Scan, I get slices
+Each Slice is gray matrix with size (512x512x3)
+Save PNG Image in integer 24bit
+Using NoduleV1 dataset
+
+Model was trained in July 18th, 2021
