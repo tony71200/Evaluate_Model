@@ -8,18 +8,20 @@ from datetime import datetime
 import pandas as pd
 from glob import glob
 from libraries.summarytxt import read_ground_truth_txt, read_pred_txt
+import time
 
 now = datetime.now()
 
 class ObjectDetectMetric():
-    def __init__(self, dir:str, path_image:str,folder_GroundTruth:str, 
+    def __init__(self, dir:str, path_image_folder:str, 
                 folder_ModelName:str,
-                names_class = ['nodule'],
-                list_folder = ['subset{}'.format(i) for i in range(10)], 
+                path_gt:str,
+                path_pred:str,
+                names_class = ['nodule'], 
                 check_class_first=True,
-                extension = '*.jpg', is_nckuh = False):
+                extension = '*.jpg'):
+        # Intial value
         self.dir = dir
-        self.folder_GrouthTruth = folder_GroundTruth
         self.folder_ModelName = folder_ModelName
         self.names_class = names_class
         self.check_class_first = check_class_first
@@ -29,17 +31,24 @@ class ObjectDetectMetric():
         self.infos_all = [ [] for _ in range(self.number_classes + 1)]
         self._is_sorted = False
 
-        # path_gt = os.path.join(self.dir, self.folder_GrouthTruth, "GroundTruth.csv")
-        path_gt = utils.select_file(os.path.join(self.dir, self.folder_GrouthTruth))
+        # Load Ground Truth data and Predicted Data
+
+        # Load Ground Truth data
+        path_gt = os.path.join(self.dir, path_gt)
         self.ground_truth = self._load_groundtruth(path_gt)
-        path_pred = utils.select_file(os.path.join(self.dir, self.folder_ModelName), title="Choose Prediction file")
+        #Load Predicted Data
+        path_pred = os.path.join(self.dir, self.folder_ModelName, path_pred)
         self.prediction = self._load_prediction(path_pred)
+        # Path save folder
         self.save_result = os.path.join(dir, folder_ModelName, "003_Result")
 
+        #Load Image Name
         self.list_path_image = []
         # for subset in list_folder:
         #     self.list_path_image.extend(glob(os.path.join(path_image, subset, extension)))
-        # self.list_path_image = glob(os.path.join(path_image, extension))
+        self.list_path_image = glob(os.path.join(path_image_folder, extension))
+
+        #Initial
         self.TP = {}
         self.FP = {}
         self.FN = {}
@@ -49,6 +58,7 @@ class ObjectDetectMetric():
         self.number_prediction_all = [0] * self.number_classes
         self.infos_all = [ [] for _ in range(self.number_classes + 1)]
         self._is_sorted = False
+        
         
     @staticmethod
     def append_dict(dictionary:dict, filename:str, list_bb:list):
@@ -227,12 +237,12 @@ class ObjectDetectMetric():
         same = labels_groundtruth.reshape((-1,1))==labels_prediction.reshape((1,-1))
         if self.check_class_first:
             matrix_IOU *= same
-            # matrix_IOP *= same
-            # matrix_IOGT *= same
+            matrix_IOP *= same
+            matrix_IOGT *= same
         else:
             matrix_IOU[same] *= (1+1e-06)
-            # matrix_IOP[same] *= (1+1e-06)
-            # matrix_IOGT[same] *= (1+1e-06)
+            matrix_IOP[same] *= (1+1e-06)
+            matrix_IOGT[same] *= (1+1e-06)
         
         # if matrix_IOU.size != 0:
         #     ind = np.argwhere(matrix_IOU==np.amax(matrix_IOU,1, keepdims=True))
@@ -254,7 +264,6 @@ class ObjectDetectMetric():
                                                                     scores_prediction[j],
                                                                     matrix_IOU[i,j]])
                     self.append_dict(self.TP, filename, [bboxes_groundtruth[i], bboxes_prediction[j]])
-                    # self.TP.append([filename, bboxes_groundtruth[i], bboxes_prediction[j]])
                 elif matrix_IOP[i,j] > threshold_iop:
                     self.infos_all[ labels_prediction[j] ].append([labels_groundtruth[i],
                                                                     scores_prediction[j],
@@ -393,8 +402,8 @@ class ObjectDetectMetric():
                 bb = []
             self._update(np.array(gt), np.array(bb), key, iou_thr)
 
-    def filter_draw(self, conf_threshold, iou_thresh= 0.5, gt_color= 'red', pred_color = 'blue', reportDoctor = True):
-        utils.make_new_folder(os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh)))
+    def filter_draw(self, test_folder:str, conf_threshold, iou_thresh= 0.5, gt_color= 'red', pred_color = 'blue', reportDoctor = True):
+        utils.make_new_folder(os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), test_folder))
         for path_image in self.list_path_image:
             filename = utils.get_filename(path_image)
             image = utils.readImagePIL(path_image)
@@ -406,7 +415,7 @@ class ObjectDetectMetric():
                 pred_bb = np.array(self.prediction_NMS[filename])[:, 1:]
                 image = utils.drawBB(image, pred_bb, pred_color, is_pred= True)
 
-            path_tp = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), 'TP')
+            path_tp = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), test_folder, 'TP')
             utils.make_new_folder(path_tp)
             if filename in self.TP:
                 for index, (gt_bbox, pred_bbox) in enumerate(self.TP[filename]):
@@ -417,13 +426,13 @@ class ObjectDetectMetric():
                     bb = [x1, y1, x2, y2]
                     utils.crop_n_save(image, filename, bb, path_tp, index,reportDoctor= reportDoctor)
             
-            path_fn = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), 'FN')
+            path_fn = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), test_folder, 'FN')
             utils.make_new_folder(path_fn)
             if filename in self.FN:
                 for index, gt_bbox in enumerate(self.FN[filename]):
                     utils.crop_n_save(image, filename, gt_bbox, path_fn, index,reportDoctor= reportDoctor)
 
-            path_fp = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), 'FP')
+            path_fp = os.path.join(self.save_result, str(conf_threshold), 'result_image_thrIOU_{}'.format(iou_thresh), test_folder,'FP')
             utils.make_new_folder(path_fp)
             if filename in self.FP:
                 for index, pred_bbox in enumerate(self.FP[filename]):
@@ -431,53 +440,54 @@ class ObjectDetectMetric():
 
 
 if __name__ == "__main__":
-    # path_image_folder = r'D:\02_BME\000_LUNA16\NoduleV1_RGB'
-    # directory = r'D:\02_BME\003_evaluation_Model\LUNA16\003_LUNA_NoduleV1'
-    # GT_folder = "000_GroundTruth"
-    # Model_folder = "006_Model_20210812_Gray_RemoveC5"
-    # confident_list = [0.5]
-    # iou_list = [0.1]
-    # eval = ObjectDetectMetric(directory, path_image_folder, GT_folder, Model_folder,
-    #                         ["nodule"], list_folder=['subset8', 'subset9'])
-    # for conf in confident_list:
-    #     if not os.path.exists(os.path.join(eval.save_result, str(conf))):
-    #         os.makedirs(os.path.join(eval.save_result, str(conf)))
-    #     for iou_thr in iou_list:
-    #         eval.processAupdate(conf, iou_thr)
-    #         eval.filter_draw(conf, iou_thr)
-    #         result = eval.get_confusion(conf,iou_thr,0.7,0.7, False)
-    #         print(result)
-    #         with open(os.path.join(eval.save_result, str(conf), "confusion_maxtrix_{}_thrIOu_{}.txt".format(now.strftime("%Y%m%d"), iou_thr)), 'w+') as writeLine:
-    #             writeLine.writelines(result)
-    #             writeLine.close()
-    #         eval.clear()
-    #     # infor = eval.infos_all
-
-    path_image_folder = r'D:\02_BME\002_NCKUH\DataSet_20210823\02_02_DataMe_DataSet\image'
+    test_dict = {
+        "Ln": {
+            'path_image_folder': r'D:\02_BME\002_NCKUH\DataSet_20210823\02_01_DataLn_DataSet\image',
+            'gt_file': r"000_GroundTruth\Test_Ln.txt",
+            'pred_file': 'pred_Ln.txt'
+        },
+        "Me": {
+            'path_image_folder': r'D:\02_BME\002_NCKUH\DataSet_20210823\02_02_DataMe_DataSet\image',
+            'gt_file': r"000_GroundTruth\Test_Me.txt",
+            'pred_file': 'pred_Me.txt'
+        }
+    }
     directory = r'D:\02_BME\003_evaluation_Model\NCKUH-New'
-    GT_folder = "000_GroundTruth"
-    Model_folder = "002_modified_yolov4_darknet_20210828"
-    confident_list = [0.5]
-    iou_list = [0.5]
-    eval = ObjectDetectMetric(directory, path_image_folder, GT_folder, Model_folder,
-                            ["nodule"], list_folder=['Test_B', 'Test_C'], is_nckuh=True)
-    for conf in confident_list:
-        if not os.path.exists(os.path.join(eval.save_result, str(conf))):
-            os.makedirs(os.path.join(eval.save_result, str(conf)))
-        for iou_thr in iou_list:
-            eval.processAupdate(conf, iou_thr)
-            # eval.filter_draw(conf, iou_thr)
-            
-            # eval.filter_draw(conf, iou_thr, reportDoctor=False)
-            
-            result = eval.get_confusion(conf,iou_thr,0.7,0.7, False)
-            print(result)
-            with open(os.path.join(eval.save_result, str(conf), "Me_confusion_maxtrix_{}_thrIOu_{}.txt".format(now.strftime("%Y%m%d"), iou_thr)), 'w+') as writeLine:
-                writeLine.writelines(result)
-                writeLine.close()
-            eval.clear()
-        # infor = eval.infos_all
+    Model_folder = "005_modified_yolov4_aspp_darknet_20210910"
+    conf = 0.5
+    iou_thresh = 0.5
+    for test_file in test_dict.keys():
+        path_image_folder = test_dict[test_file]['path_image_folder']
+        path_gt = test_dict[test_file]['gt_file']
+        path_pred = test_dict[test_file]["pred_file"]
 
+        evaluation = ObjectDetectMetric(
+            directory,
+            path_image_folder,
+            Model_folder,
+            path_gt,
+            path_pred
+        )
+
+        if not os.path.exists(os.path.join(evaluation.save_result, str(conf))):
+            os.makedirs(os.path.join(evaluation.save_result, str(conf)))
+        
+        start = time.time()
+        evaluation.processAupdate(conf, iou_thresh)
+        # eval.filter_draw(conf, iou_thr)
+        
+        evaluation.filter_draw(test_file, conf, iou_thresh, reportDoctor=False)
+        
+        result = evaluation.get_confusion(conf,iou_thresh,0.7,0.7, False)
+        print(result)
+        with open(os.path.join(evaluation.save_result, str(conf), "{}_confusion_maxtrix_{}_thrIOu_{}.txt".format(test_file, now.strftime("%Y%m%d"), iou_thresh)), 'w+') as writeLine:
+            writeLine.writelines(result)
+            writeLine.close()
+        evaluation.clear()
+        end = time.time()
+        len_image = len(evaluation.prediction.keys())
+        print("avg time: {}".format((end-start)/ len_image))
+            
 
     
 
